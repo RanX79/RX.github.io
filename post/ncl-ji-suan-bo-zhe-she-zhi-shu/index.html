@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>NCL计算波折射指数 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="去年研究了波折射指数的计算公式，当时觉得太复杂了不想写代码于是放弃，但今年突然又觉得还是算一下，于是又研究了几天，又被折磨了一下。人果然不能偷懒！
+利用波折射指数诊断波的传播环境，计算方法:(Andrews et al.,1987)
+
+公式..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">NCL计算波折射指数</h2>
+            <div class="post-date">2024-06-16</div>
+            
+              <div class="feature-container" style="background-image: url('https://RanX79.github.io//post-images/ncl-ji-suan-bo-zhe-she-zhi-shu.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p>去年研究了波折射指数的计算公式，当时觉得太复杂了不想写代码于是放弃，但今年突然又觉得还是算一下，于是又研究了几天，又被折磨了一下。人果然不能偷懒！</p>
+<p>利用波折射指数诊断波的传播环境，计算方法:(Andrews et al.,1987)<br>
+<img src="https://RanX79.github.io//post-images/1718507275798.png" alt="" loading="lazy"><br>
+公式都差不多，但Weinberger et al.,(2021)这篇文章里面改变了好几个形式，我就算了一个比较原始的。<br>
+<img src="https://RanX79.github.io//post-images/1718507323352.png" alt="" loading="lazy"><br>
+波折射指数体现大气环流的背景场是否有利于行星波传播；但其计算是基于纬圈平均的场，实际波的反射传播是一个局地的区域现象，波折射指数只能判断背景流是否有利于波动反射，但无法准确地表征波动反射的发生，当RI＜0时，行星波发生反射；RI＞0，行星波在此区域传播，越大越容易传播；(注意是波折射指数的平方RI，看文献好像没有找到识别局地区域反射的指数，还看见一个U2-U10的定义，感觉是风场的切变，定义方法比较粗糙）。</p>
+<p>Albers and Birner., (2014)文章中RI的单位是m-2，根据(f/2NH)2，f单位为s-1，NN单位为s-2，H单位为m，倒推第三项单位为m-2，合理；计算结果乘了地球半径的平方，将RI无量纲化；感觉公式算出来量级有一点奇怪，算出来主要还是以位涡第一项为主导的样子；</p>
+<p>(All fields are multiplied by Earth’s radius squared, which nondimensionalizes the refractive index and gives the PV gradient the units of meters per second)<br>
+<img src="https://RanX79.github.io//post-images/1718507355770.png" alt="" loading="lazy"><br>
+浅浅的用ncl算了一下，结果感觉看起来还算正常？但是第一项量级有一点问题；真烦人啊啊啊啊啊啊啊啊啊啊看了一下文献中的量级差不多(Li et al.,2017)<br>
+<img src="https://RanX79.github.io//post-images/1718507380531.png" alt="" loading="lazy"><br>
+Li et al.,2017文章中说正负折射指数的平方会相互抵消，新定义一个负波折射指数平方的频率Fn2来诊断行星波的传播，具体的计算方法，将格点上n2为负值的一天定义为1，为正值的一天定义为0，Fn2定义为负值的天数除以总天数，Fn2合成的结果减去气候态的得到异常值，行星波在Fn2小的区域传播，在大的区域反射；<br>
+<img src="https://RanX79.github.io//post-images/1718507418767.png" alt="" loading="lazy"><br>
+···<br>
+;============================================================<br>
+; calculate QG RI index(Andrews et al.,1987)<br>
+;============================================================<br>
+;pv:potential vorticity;<br>
+;T :basic state of air temperature;<br>
+;u :basic state of  uwind;<br>
+;k :zonal wavenumber(k=1 means wave 1)<br>
+;Two methods:By using the pv data and calculting the pv;<br>
+;if the phase speed c equals zero, the RI is treated as the stationary wave RI;<br>
+;return:RI Uyy  Uzz RI1<br>
+undef(&quot;def_cal_QGRI&quot;)<br>
+function def_cal_QGRI(pv[<em>][</em>][<em>][</em>]:numeric,T[<em>][</em>][<em>][</em>]:numeric,u[<em>][</em>][<em>][</em>]:numeric,k[*]:numeric)<br>
+local sclhgt,gc,pi,dName,level,lat,lon,re,f,density,coslat,leveltmp,coslattmp,ftmp,dthetadz,NN,pv_ZonalMean,u_ZonalMean,T_ZonalMean,k,T_ZonalMean,densitytmp,u_grad,uyy1,u_gradz,uzz1,pv_grad2,RI2,RI3</p>
+<pre><code>begin
+;------ scale height
+sclhgt  = 7000.;units:m
+; Gas constant
+gc      = 290.
+pi      = atan(1.0)*4.
+; 自转角速度
+wmg=2.*pi/(60.*60.*24.)
+
+
+dName   = getvardims(pv)
+level   = pv&amp;$dName(1)$
+lat     = pv&amp;$dName(2)$
+lon     = pv&amp;$dName(3)$
+dim     =dimsizes(T)
+
+
+;------Radius of the earth
+re      = 6.37*10^6 ;6378388 units:m
+;------Coriolis parameter
+f       = lat(:)
+f       = (/2.*2.*pi/(60.*60.*24.)*sin(pi/180.*f)/)
+
+;------ cosine
+coslat  = cos(lat(:)*pi/180.)
+coslat@_FillValue = default_fillvalue(typeof(coslat))
+coslat  = (/where(coslat.le.0.,coslat@_FillValue,coslat)/)
+
+
+
+;zanal ano
+T_ZonalMean=dim_avg_n_Wrap(T, 3)
+printVarSummary(T_ZonalMean)
+
+
+; 1-D -&gt; 3-D
+leveltmp    = conform_dims(dimsizes(T_ZonalMean),level,1)
+coslattmp   = conform_dims(dimsizes(T_ZonalMean),coslat,2)
+ftmp        = conform_dims(dimsizes(T_ZonalMean),f,2)
+;densitytmp = conform_dims(dimsizes(T_ZonalMean),density,1)
+
+
+;ρ0=ρs*exp(-z/H)
+densitytmp=1.2*(leveltmp/1000)
+
+
+printVarSummary(leveltmp)  
+printVarSummary(coslattmp)  
+printVarSummary(ftmp)      
+printVarSummary(densitytmp)
+;-------------------------------------------------------------------------------
+; vertical gradient of potential temperature  (K/m)
+dthetadz = center_finite_diff_n(T_ZonalMean*(1000./leveltmp)^0.286,-sclhgt*log(level/1000.),False,0,1)
+printVarSummary(dthetadz)
+
+
+;--------------------------------------------------------------------
+; Brunt Vaisala frequency
+NN      = (gc*(leveltmp/1000.)^0.286)/sclhgt * dthetadz
+NN@var_desc     = &quot;Brunt Vaisala frequency&quot;
+NN@units        = &quot;1/s^2&quot;
+NN@long_name    = &quot;basic state Brunt Vaisala frequency (TN2001)&quot;
+NN@_FillValue   = T@_FillValue
+NN              = where(NN.gt.0,NN,NN@_FillValue)
+printVarSummary(NN)
+print(&quot;-----NN-----&quot;)
+printMinMax(NN, 0)
+
+
+;------ zonal-mean zonal wind
+u_ZonalMean=dim_avg_n_Wrap(u, 3)
+printVarSummary(u_ZonalMean)
+print(&quot;-----u_ZonalMean-----&quot;)
+printMinMax(u_ZonalMean, 1)
+
+
+;------------------------------------------------------------------------------------------------
+;---------------------------求zonal mean的pv经向梯度 pv_grad
+;第1项：2*自转角速度/地球半径*cos纬度
+pv_grad1 =2.*wmg/re*coslattmp
+print(&quot;------pv_grad1-----&quot;)
+printMinMax(pv_grad1, 0)
+
+
+;注意没有加负号！-uyy -uzz
+;-----第2项：uyy
+u_grad  =center_finite_diff_n(u_ZonalMean*coslattmp ,lat*pi/180.,False,0,2)
+uyy1    =center_finite_diff_n(u_grad/coslattmp      ,lat*pi/180.,False,0,2)
+
+uyy     =1./(re^2)*uyy1
+print(&quot;-----uyy-----&quot;)
+printMinMax(uyy, 0)  
+
+
+
+;-----第3项：uzz
+u_gradz     =center_finite_diff_n(u_ZonalMean,-sclhgt*log(level/1000.),False,0,1)
+printVarSummary(u_gradz)  
+uzz1        =center_finite_diff_n(u_gradz*densitytmp/NN,-sclhgt*log(level/1000.),False,0,1)
+printVarSummary(uzz1)    
+
+
+uzz=ftmp^2/densitytmp*(uzz1)
+print(&quot;-----uzz-----&quot;)
+printMinMax(uzz, 0)
+
+
+
+print(&quot;-----cal pv_grad-----&quot;)
+pv_grad=(/pv_grad1-uyy-uzz/)
+
+
+printMinMax(pv_grad, 0)
+copy_VarCoords(u_ZonalMean, pv_grad)
+printVarSummary(pv_grad)
+;=======================================================================
+;直接使用pv的数据计算
+;--------------------------------------------
+pv_grad2=grad_latlon_cfd(pv, lat*pi/180., lon*pi/180., True, False)
+;0为经向梯度
+printVarSummary(pv_grad2)
+;------ 对lon维 zonal-mean potential vorticity
+pv_ZonalMean=dim_avg_n_Wrap(pv_grad2[0], 3)
+print(&quot;-----data pv_grad-----&quot;)
+printMinMax(pv_ZonalMean, 0)
+printVarSummary(pv_ZonalMean)
+;=======================================================================
+;------QG RI index for the stationary wave k(c=0)
+
+print(&quot;-----RI1-----&quot;)
+RI1=pv_grad/u_ZonalMean ;有一点问题感觉！为什么量级差异这么多啊啊啊啊啊啊啊啊！！！！！！10^-10/10^1 量级不对哇啊啊啊啊！
+printMinMax(RI1, 0)     ;
+copy_VarCoords(u_ZonalMean, RI1)
+
+
+print(&quot;-----RI2-----&quot;)
+RI2=(k/(re*coslattmp))^2
+printMinMax(RI2, 0)
+
+
+print(&quot;-----RI3-----&quot;)
+RI3=(ftmp/(2.*sclhgt))^2/NN
+printMinMax(RI3, 0)
+
+
+
+print(&quot;-----RI-----&quot;)
+RI=(/RI1-RI2-RI3/)
+printVarSummary(RI)
+printMinMax(RI, 0)
+
+
+RI=RI*re^2  ;*地球半径的平方，将折射率无量纲化(Albers and Birner,2014)；
+;根据(f/2NH)^2 f单位为s-1，NN单位为s-2，H单位为m，倒推第三项单位为m-2，合理！
+copy_VarCoords(T_ZonalMean, RI)
+RI@units = &quot;1&quot;
+RI@long_name = &quot;QGRI&quot;
+;--------------------不知道返回uyy和uzz时需不需要这样处理，输出看一下结果！
+uyy=-uyy*re^2
+uzz=-uzz*re^2
+
+
+pv_grad=pv_grad*re^2
+
+
+RI1=RI1*re^2
+
+
+copy_VarCoords(T_ZonalMean, uyy)
+copy_VarCoords(T_ZonalMean, uzz)
+uyy@long_name = &quot;uyy&quot;
+uzz@long_name = &quot;uzz&quot;
+
+
+copy_VarCoords(T_ZonalMean, pv_grad)
+pv_grad@long_name = &quot;pv_grad&quot;
+pv_grad@units = &quot;m/s&quot;
+
+
+copy_VarCoords(T_ZonalMean, RI1)
+RI1@long_name = &quot;RI1&quot;
+
+print(&quot;-----re2-----&quot;)
+printMinMax(RI, 0)
+return([/RI,uyy,uzz,pv_grad,RI1/])
+end
+</code></pre>
+<p>代码包括直接用pv数据计算梯度和用公式计算的，改一下输入就行，输出的变量需要啥就输出啥！</p>
+<p>参考文献：</p>
+<p>Andrews, D. G., J. R. Holton, and C. B. Leovy, 1987: Middle Atmosphere Dynamics. International Geophysics Series, Vol. 40, Academic Press, 489 pp.</p>
+<p>Albers, J.R., Birner, T., 2014. Vortex Preconditioning due to Planetary and Gravity Waves prior to Sudden Stratospheric Warmings. Journal of the Atmospheric Sciences 71, 4028–4054.. https://doi.org/10.1175/jas-d-14-0026.1</p>
+<p>Li, Q., Graf, H.-F., &amp; Giorgetta, M. A. (2007). Stationary planetary wave propagation in Northern Hemisphere winter-climatological analysis of the refractive index. Atmospheric Chemistry and Physics, 7(1), 183–200. https://doi.org/10.5194/acp-7-183-2007</p>
+<p>Weinberger, I., Garfinkel, C.I., White, I.P., Birner, T., 2021. The Efficiency of Upward Wave Propagation near the Tropopause: Importance of the Form of the Refractive Index. Journal of the Atmospheric Sciences 78, 2605–2617.. https://doi.org/10.1175/jas-d-20-0267.1</p>
+<script 
+        src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/ncl-ji-suan-plumb-bo-huo-dong-tong-liang/">
+                  <h3 class="post-title">
+                    NCL计算plumb波活动通量
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

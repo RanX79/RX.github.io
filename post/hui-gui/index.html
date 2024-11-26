@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>回归 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="ncl回归
+ncl ：regCoef_n
+计算给定维度上两个变量之间的线性回归系数。
+regCoef_n通过给定维度上的最小二乘法计算线性回归系数。它旨在处理多维 x 和 y 数组。如果需要一维 x 和 y 数据的单个最佳拟合线的回归信息，..." />
+    <meta name="keywords" content="数据处理" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">回归</h2>
+            <div class="post-date">2022-09-11</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="ncl回归">ncl回归</h3>
+<p>ncl ：<font color="red">regCoef_n</font></color><br>
+计算给定维度上两个变量之间的线性回归系数。<br>
+regCoef_n通过给定维度上的<strong>最小二乘法</strong>计算<strong>线性回归系数</strong>。它旨在处理多维 x 和 y 数组。如果需要一维 x 和 y 数据的单个最佳拟合线的回归信息，则 regline 是合适的选择。</p>
+<p>一元回归处理的是两个变量之间的关系，即一个预报量与一个因子之间的关系。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://RanX79.github.io/tag/cYPVpG0jY/" class="tag">
+                    数据处理
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/chao-qian-zhi-hou-xiang-guan/">
+                  <h3 class="post-title">
+                    超前滞后相关
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>超前滞后相关 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="ncl中要计算正滞后和负滞后，必须进行两次计算。
+mxlag    = 9
+x_Lead_y = esccr(x,y,mxlag)
+y_Lead_x = esccr(y,x,mxlag)    ; switch the order of t..." />
+    <meta name="keywords" content="数据处理" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">超前滞后相关</h2>
+            <div class="post-date">2022-09-06</div>
+            
+            <div class="post-content" v-pre>
+              <p><font color=red>ncl中要计算正滞后和负滞后，必须进行两次计算。</font></color></p>
+<pre><code>mxlag    = 9
+x_Lead_y = esccr(x,y,mxlag)
+y_Lead_x = esccr(y,x,mxlag)    ; switch the order of the series
+
+ccr = new ( 2*mxlag+1, float)    
+ccr(0:mxlag-1) = y_Lead_x(1:mxlag:-1)  ; &quot;negative lag&quot;, -1 reverses order
+ccr(mxlag:)    = x_Lead_y(0:mxlag)     ; &quot;positive lag&quot;
+</code></pre>
+<p>❓q1  谁超前谁？<br>
+esccr(x,y,mxlag)<br>
+计算序列x最右边维及序列y最右边维之间的交叉相关系数。<font color=red>mxlag表示x超前y的时长</font></color>，建议 0 &lt;= mxlag &lt;= N/4，N为数组x或数组y最右边维的序列长度。<br>
+eg. 给定数组x(M,N)和数组y(K,N)，计算x与y的交叉相关系数。</p>
+<pre><code>cor=esccr(x,y,10)；返回值为cor(M,N,0:10)，
+其最左边11个数表示x超前y从0至10个时次的交叉相关系数。
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://RanX79.github.io/tag/cYPVpG0jY/" class="tag">
+                    数据处理
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/python-xue-xi-day4-hua-zhe-xian-tu/">
+                  <h3 class="post-title">
+                    Python学习 day4-画折线图
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

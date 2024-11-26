@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>CDO | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="cdo进行数据插值,将原始的sst.nc文件插值为经纬度网格为144x73的sst_interp.nc文件输出
+cdo remapbic,r144x73 sst.nc sst_interp.nc
+cdo remapbic,r360x181
+..." />
+    <meta name="keywords" content="cdo" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">CDO</h2>
+            <div class="post-date">2022-09-18</div>
+            
+              <div class="feature-container" style="background-image: url('https://RanX79.github.io//post-images/cdo.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="cdo进行数据插值将原始的sstnc文件插值为经纬度网格为144x73的sst_interpnc文件输出">cdo进行数据插值,将原始的sst.nc文件插值为经纬度网格为144x73的sst_interp.nc文件输出</h3>
+<p>cdo remapbic,r144x73 sst.nc sst_interp.nc<br>
+cdo remapbic,r360x181<br>
+cdo remapbic,r144<em>73 &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthly_1</em>1.nc&quot; &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthly_2.5*2.5.nc&quot;</p>
+<p>1440x721 0.25*0.25</p>
+<h3 id="合并数据文件">合并数据文件</h3>
+<p>cdo -b F32 select,name=t2m /raid63/xran/Research_ERA5/data/daily6hr/t2m/era5_6hourly_t2m_[2]* /raid63/xran/Research_ERA5/data/daily_merge/t2m/t2m_2000_2021_daily4.nc</p>
+<h3 id="选择区域">选择区域</h3>
+<p>通过如下命令，选择我们需要区域的数据，比如选择115°E-120°E，20°N-30°N之间的区域：</p>
+<p>cdo sellonlatbox,0,360,0,90 &quot;/raid63/xran/Research_ERA5/data/t2m_1950_2021_monthly_1<em>1.nc&quot;  &quot;/raid63/xran/Research_ERA5/data/t2m_1950_2021_monthlyNH_1</em>1.nc&quot;</p>
+<p>cdo sellonlatbox,0,360,0,90 &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthly_1<em>1.nc&quot; &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthlyNH_1</em>1.nc&quot;</p>
+<p>cdo sellonlatbox,0,360,0,90 &quot;/raid63/xran/Research_ERA5/data/t_1950_2021_monthly_1<em>1.nc&quot; &quot;/raid63/xran/Research_ERA5/data/t_1950_2021_monthlyNH_1</em>1.nc&quot;</p>
+<p>cdo  selmon,10 &quot;/raid63/xran/Research_ERA5/data/t2m_1950_2021_monthlyNH_1<em>1.nc&quot; &quot;/raid63/xran/Research_ERA5/data/t2m_1950_2021_10monNH_1</em>1.nc&quot;</p>
+<p>cdo -b F32 select,name=t2m &quot;/raid63/xran/Research_ERA5/data/monthly/t2m_NH*&quot;  /raid63/xran/Research_ERA5/data/monthly/t2m_1950_2021_monNH_1*1.nc</p>
+<h2 id="经纬度反转invert-the-latitudes-from-north-south-to-south-north">经纬度反转Invert the latitudes from north-south to south-north:</h2>
+<p>cdo -invertlat <infile> <outfile></p>
+<h2 id="挑选指定年份">挑选指定年份</h2>
+<p>cdo selyear,2101/2227 in.nc out.nc<br>
+cdo selyear,1970/2020 &quot;/raid63/xran/Research_ERA5/data/daily/hgt_dailymean_1950_2021_no229.nc&quot; &quot;/raid63/xran/Research_ERA5/data/daily/hgt_dailymean_1970_2020_no229.nc&quot;</p>
+<h2 id="数据类型转换">数据类型转换</h2>
+<p>cdo -b F64 copy input.nc output.nc  # 将input文件中float类型的数据更改为double，并另存为output.nc若不加F表示将所有的数据都改为double<br>
+cdo -b F32 copy &quot;/raid63/xran/Research_ERA5/data/t_1950_2021_monthly_2.5<em>2.5.nc&quot; &quot;/raid63/xran/Research_ERA5/data/t_1950_2021_monthly_2.5</em>2.5_f.nc&quot;</p>
+<p>cdo -b F32 copy &quot;/raid63/xran/Research_ERA5/data/u_dailymean_1950_2021_no229.nc&quot; &quot;/raid63/xran/Research_ERA5/data/u_dailymean_1950_2021_no229_f.nc&quot;</p>
+<p>##运算</p>
+<ol>
+<li>Operations with constants:<br>
+1 addc: sum to a constant.<br>
+2 subc: subtracts from a constant.<br>
+3 mulc: multiplies by a constant.<br>
+4 divc: divided by a constant.<br>
+cdo divc,9.8 &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthly_1<em>1.nc&quot; &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthly_1</em>1_z.nc&quot;</li>
+</ol>
+<p>##乘法<br>
+Converting the precipitation of [kg/(m2 s)] to (mm/day).<br>
+cdo mulc,86400 pr.CANESM2.1996.2005.nc pr.mensal.nc<br>
+##减法<br>
+Converting Kelvin temperature (K) to degrees Celsius (oC)<br>
+cdo subc,273.15 tar.NCEP.R2.1996.2005.nc tc.nc<br>
+##更改时间单位<br>
+cdo settunits,hours input.nc output.nc<br>
+cdo setunit,m &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthly_1<em>1_z.nc&quot; &quot;/raid63/xran/Research_ERA5/data/hgt_1950_2021_monthly_1</em>1_z1.nc&quot;</p>
+<p>cdo ymonmean &quot;/raid63/xran/Research_ERA5/data/t2m_dailymean_1950_2021_no229.nc&quot; &quot;/raid63/xran/Research_ERA5/data/t2m_clm_1950_2021_no229.nc&quot;<br>
+##计算月平均<br>
+cdo ymonmean &quot;/raid63/xran/Research_ERA5/data/dailyave/t2m/t2m_1960_2021_dailymean_no229.nc&quot; &quot;/raid63/xran/Research_ERA5/data/t2m_clm_1950_2021_no229.nc&quot;</p>
+<p>##去趋势<br>
+detrend ifile ofile<br>
+cdo detrend /raid63/xran/Research_ERA5/data/daily/t2m_1960_2021_dailymean_no229.nc /raid63/xran/Research_ERA5/data/daily/t2m_1960_2021_dailymean_no229_trend.nc</p>
+<p><a href="https://www.jianshu.com/p/69567bc820f0">cdo的使用--数据的合并，剪裁，更改等</a></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://RanX79.github.io/tag/fBHAhwE5o/" class="tag">
+                    cdo
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/fu-li-xie-bian-huan-fft/">
+                  <h3 class="post-title">
+                    傅里叶变换：FFT
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

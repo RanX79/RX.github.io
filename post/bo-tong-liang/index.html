@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>波通量 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="大气动力学诊断Rossby波的传播时通常用波作用通量来表示。
+常用的三种波作用通量分别为Plumb波作用通量T-N波作用通量和局地 E-P通量；
+Plumb波作用通量的纬向分量较大而经向分量较小，适用于振幅较小的纬向均匀的西风带Rossby..." />
+    <meta name="keywords" content="通量" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">波通量</h2>
+            <div class="post-date">2022-09-26</div>
+            
+            <div class="post-content" v-pre>
+              <p>大气动力学诊断Rossby波的传播时通常用<strong>波作用通量</strong>来表示。<br>
+常用的三种波作用通量分别为Plumb波作用通量T-N波作用通量和局地 E-P通量；</p>
+<p>Plumb波作用通量的纬向分量较大而经向分量较小，适用于振幅较小的纬向均匀的西风带Rossby长波的诊断。<br>
+T-N波作用通量是对Plumb波作用通量的改进，经向分量得以增强，能更好地描述纬向非均匀气流中的较大振幅的西风带Rossby长波扰动。T-N波作用通量计算时背景场取多年平均的当月气候场较合适，能更好地反映当前季节内的Rossby波传播异常。<br>
+局地 E-P通量可以诊断一段时间内天气尺度瞬变波对背景场(定常波)总的调控作用，但无法直接反映Rossby长波的逐时演变，TN波或Plumb波作用通量则可以。</p>
+<p>T-N通量传播方向说明什么？槽脊系统？能量传播？<br>
+波作用通量的矢量大小表征波能量的频散强度，矢量方向与Rossby波局地群速度的方向一致，因而指向Rossby波能量的传播方向。波作用通量辐散区可视为能量源，辐合区则对应能量汇，有利于局地扰动（槽、脊）的发展或维持。北大西洋区域常为北半球冬季Rossby波的活动源区。Rossby波又可以进一步分为波长较长的定常行星波以及波长在几千公里的天气尺度瞬变波。天气尺度瞬变波对大气长波起到调制的作用[9]，并且尺度与天气尺度过程相当。<br>
+<img src="https://RanX79.github.io//post-images/1669703396302.png" alt="" loading="lazy"></p>
+<p><a href="https://kns.cnki.net/kcms/detail/detail.aspx?dbcode=CJFD&amp;dbname=CJFDLAST2022&amp;filename=ZRZH202204007&amp;uniplatform=NZKPT&amp;v=28FzFt_sIgXpF5XvAYHT27rz4l8Qgxfyj45kNaANdhVVQdtvZvsyuwYLbjplpJYr">[1]覃皓,伍丽泉.广西两次罕见致灾冷空气活动过程中Rossby波作用的差异及成因[J].自然灾害学报,2022,31(04):75-86.DOI:10.13577/j.jnd.2022.0407.</a></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://RanX79.github.io/tag/BruBCrcLI/" class="tag">
+                    通量
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/bo-huo-dong/">
+                  <h3 class="post-title">
+                    波活动
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

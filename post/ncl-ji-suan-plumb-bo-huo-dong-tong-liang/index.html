@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>NCL计算plumb波活动通量 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="😀开心，今天终于配置好了评论！！！本来在微信公众号就是为了评论！结果没注意现在改版不能评论了！就很烦！所以继续同步github的内容！
+因为老师说TN通量的向下不一定是波活动通量向下传播！可能是向上的减少，其异常是减去了气候带的结果，Ko..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">NCL计算plumb波活动通量</h2>
+            <div class="post-date">2024-06-16</div>
+            
+              <div class="feature-container" style="background-image: url('https://RanX79.github.io//post-images/ncl-ji-suan-plumb-bo-huo-dong-tong-liang.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p>😀开心，今天终于配置好了评论！！！本来在微信公众号就是为了评论！结果没注意现在改版不能评论了！就很烦！所以继续同步github的内容！</p>
+<p>因为老师说TN通量的向下不一定是波活动通量向下传播！可能是向上的减少，其异常是减去了气候带的结果，Kodera这篇文章中也提到了这个；<br>
+<img src="https://RanX79.github.io//post-images/1718506930875.png" alt="" loading="lazy"><br>
+所以现在计算了一下Plumb的结果，plumb是纬向偏差，包含了时间的总场。但是不知道这两者算出来差异会不会很大！按理说感觉应该不会太大吧！<br>
+2008-Kodera., et al.,-GRL-Tropospheric impact of reflected planetary waves from the stratosphere.<br>
+<img src="https://RanX79.github.io//post-images/1718506949849.png" alt="" loading="lazy"><br>
+<img src="https://RanX79.github.io//post-images/1718506962695.png" alt="" loading="lazy"></p>
+<p>结果和摸鱼的对比了一下，大体趋势差不多，但是垂直方向没有验证，有问题联系我。</p>
+<pre><code>;///////////////////////////////////////////////////////////////
+;  Calculate 3-D wave-activity flux:plumb[1985]
+;///////////////////////////////////////////////////////////////
+;  Written by Ran,20240606.
+;  E-mail: 602023280016@nju.edu.cn
+
+;If there is a problem with the code calculation, please contact me by email.
+
+;Input data：hgt t u v
+
+;Note that the data downloaded by ERA5 is the gravitational potential (unites:m^2/s^2).
+;The ncep data is the gravity potential height z, which needs to be multiplied by g.
+
+;Input data must include the entire longitude！！！Because to take the zonal deviation!!
+
+;Return value -  Four multi-dimentional arrays containing:
+;                    x-component:  Fx
+;                    y-component:  Fy
+;                    z-component:  Fz
+;                    z_ano
+
+;Usage: [/Fx,Fy,Fz,z_ano/] = plumb_pLLL(hgt,t,u,v)
+
+
+undef(&quot;plumb_pLLL&quot;)
+function plumb_pLLL(hgt[*][*][*][*]:numeric,t[*][*][*][*]:numeric,u[*][*][*][*]:numeric,v[*][*][*][*]:numeric)
+local re,sclhgt,k,pi,dName,level,lat,lon,f,wmg,ga,z,coslat,sin2lat,leveltmp,ftmp,coslattmp,sin2lattmp,t_ano,u_ano,v_ano,t_mean,dt_meandz,\
+        S,Stmp,dvzdlon,duzdlon,dtzdlon
+begin
+;基本量
+
+; Radius of the earth
+re      = 6.37*10^6;6378388
+
+; scale height
+sclhgt  = 8000.
+
+k=0.286
+
+; pi
+pi      = atan(1.0)*4.
+printVarSummary(hgt)
+dName   = getvardims(hgt)
+if (any(ismissing(dName(1:)))) then
+   print(&quot;fatal: plumb_pLLL: requires that all the rightmost dimensions be named&quot;)
+   exit
+end if
+    level   = hgt&amp;$dName(1)$
+    lat     = hgt&amp;$dName(2)$
+    lon     = hgt&amp;$dName(3)$
+
+; Coriolis parameter
+f       = lat(:)
+f       = (/2.*2.*pi/(60.*60.*24.)*sin(pi/180.*f)/)
+f@_FillValue = hgt@_FillValue
+
+;Rotational angular velocity of the earth
+wmg=2.*pi/(60.*60.*24.) 
+
+; Gravitational acceleration
+ga      = 9.80665
+z=hgt*ga
+copy_VarMeta(hgt, z)
+; cosine
+coslat  = cos(lat(:)*pi/180.)
+coslat@_FillValue = default_fillvalue(typeof(coslat))
+coslat  = (/where(coslat.le.0.,coslat@_FillValue,coslat)/)
+
+; sin2lat
+sin2lat  = sin(2*(lat(:)*pi/180.))
+sin2lat@_FillValue = default_fillvalue(typeof(sin2lat))
+sin2lat  = (/where(sin2lat.le.0.,sin2lat@_FillValue,sin2lat)/)
+
+
+; 1-D -&gt; 4-D
+leveltmp   = conform_dims(dimsizes(hgt),level,1)
+ftmp       = conform_dims(dimsizes(hgt),f,2)
+coslattmp  = conform_dims(dimsizes(hgt),coslat,2)
+sin2lattmp = conform_dims(dimsizes(hgt),sin2lat,2)
+;Zonal deviation
+t_ano   =dim_rmvmean_n_Wrap(t, 3)
+u_ano   =dim_rmvmean_n_Wrap(u, 3)
+v_ano   =dim_rmvmean_n_Wrap(v, 3)
+z_ano   =dim_rmvmean_n_Wrap(z, 3)
+;printVarSummary(t_ano)
+;printVarSummary(z_ano)
+
+;Zonal mean
+t_mean=dim_avg_n_Wrap(t, 3)
+dt_meandz = center_finite_diff_n(t_mean,-sclhgt*log(level/1000.),False,0,1)
+
+
+S=dt_meandz+k*t_mean/sclhgt;
+copy_VarCoords_1(hgt, S)
+;printVarSummary(S)
+; 3-D -&gt; 4-D
+Stmp = conform_dims(dimsizes(hgt),S,(/0,1,2/))
+;printVarSummary(Stmp)
+
+; dvz/dlon
+dvzdlon      =  center_finite_diff_n(v_ano*z_ano,lon*pi/180.,True,0,3)
+; duz/dlon
+duzdlon      =  center_finite_diff_n(u_ano*z_ano,lon*pi/180.,True,0,3)
+; dtz/dlon
+dtzdlon      =  center_finite_diff_n(t_ano*z_ano,lon*pi/180.,True,0,3)
+
+;printVarSummary(sin2lattmp)
+;printVarSummary(dvzdlon)
+;printVarSummary(wmg)
+;printVarSummary(coslattmp)
+
+; x-component
+Fx      = leveltmp/1000.*coslattmp*(v_ano*v_ano-1./(2.*wmg*re*sin2lattmp)*dvzdlon)
+;printVarSummary(Fx)
+
+; y-component
+Fy      = leveltmp/1000.*coslattmp*(-u_ano*v_ano+1./(2.*wmg*re*sin2lattmp)*duzdlon)
+
+; z-component
+Fz      = leveltmp/1000.*coslattmp*(ftmp/Stmp*(v_ano*t_ano-1./(2.*wmg*re*sin2lattmp)*dtzdlon))
+
+copy_VarCoords(hgt,Fx)
+copy_VarCoords(Fx,Fy)
+copy_VarCoords(Fx,Fz)
+
+Fx@units = &quot;m^2/s^2&quot;
+Fx@var_desc = &quot;wave-activity flux&quot;
+Fx@long_name = &quot;x-component of wave-activity flux (Plumb1985)&quot;
+
+Fy@units = &quot;m^2/s^2&quot;
+Fy@var_desc = &quot;wave-activity flux&quot;
+Fy@long_name = &quot;y-component of wave-activity flux (Plumb1985)&quot;
+
+Fz@units = &quot;Pa m/s^2&quot;
+Fz@var_desc = &quot;wave-activity flux&quot;
+Fz@long_name = &quot;z-component of wave-activity flux (Plumb1985)&quot;
+
+return [/Fx,Fy,Fz,z_ano/]
+
+end
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://RanX79.github.io//post-images/1718507171115.png" alt="" loading="lazy"></figure>
+<script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/ncl-hua-xie-pou-mian/">
+                  <h3 class="post-title">
+                    ncl画斜剖面
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Python学习 day4-画折线图 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="import matplotlib.pyplot as plt
+import numpy as np
+x=np.linspace(20,40,100) #100表示一共分成100个
+y=np.cos(x)
+
+####画布
+fig=plt.f..." />
+    <meta name="keywords" content="python" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Python学习 day4-画折线图</h2>
+            <div class="post-date">2022-09-02</div>
+            
+            <div class="post-content" v-pre>
+              <pre><code>import matplotlib.pyplot as plt
+import numpy as np
+x=np.linspace(20,40,100) #100表示一共分成100个
+y=np.cos(x)
+
+####画布
+fig=plt.figure()
+plt.plot(x,y,ls='-.',lw='2')
+plt.show()
+</code></pre>
+<p>画各种类型的图<br>
+基础的常用绘图命令有折线图（plot）、柱状图（bar）、条形图（barh）、散点图（scatter）、直方图（hist）、饼图（pie）、箱线图（boxplot）等等。</p>
+<p><font color=red ><center><strong>折线图</strong></font></center></p>
+<pre><code>plt.plot(x,y,lw=,ls=，c=,alpha=)
+</code></pre>
+<p>（x,y）表示其在坐标轴的位置，lw为线条宽度设定，ls为线条样式设定<br>
+c为颜色，alpha为透明度设定。</p>
+<pre><code>#########引用库包##############   ‘#’符号在py中代表注释，不会被编译
+import matplotlib.pyplot as plt
+import numpy as np
+#########设定画布##############
+fig=plt.figure(figsize=(3,3),dpi=200)
+########虚构数据#############
+x=list(np.arange(1,21))
+y=np.random.randn(20)
+#######线图命令###############
+plt.plot(x,y,lw=4,ls='-',c='b',alpha=0.1)
+plt.plot()
+########show出图形###########
+plt.show()
+########保存图片###########
+fig.savefig(&quot;画布&quot;)
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://RanX79.github.io/tag/ZhhwPASHX/" class="tag">
+                    python
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/python-xue-xi-day3-hua-tu-she-zhi/">
+                  <h3 class="post-title">
+                    Python学习 day3-画图设置
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

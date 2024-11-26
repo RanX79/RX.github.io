@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>NCL常用指令 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="倾斜色标字体
+res@lbLabelAngleF    =    45                 ; angle labels
+
+只画指定值的等值线
+res3@cnLevelSelectionMode = &quot;Explicit..." />
+    <meta name="keywords" content="ncl" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">NCL常用指令</h2>
+            <div class="post-date">2022-09-19</div>
+            
+              <div class="feature-container" style="background-image: url('https://RanX79.github.io//post-images/ncl.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="font-colorredcenter倾斜色标字体fontcenter"><font color=red><center><strong>倾斜色标字体</strong></font></center></h3>
+<pre><code>res@lbLabelAngleF    =    45                 ; angle labels
+</code></pre>
+<h3 id="font-colorredcenter只画指定值的等值线fontcenter"><font color=red><center><strong>只画指定值的等值线</strong></font></center></h3>
+<pre><code>res3@cnLevelSelectionMode = &quot;ExplicitLevels&quot;
+res3@cnLevels = (/2/)
+res3@cnMonoLineThickness = False
+res3@cnLineThicknesses = (/2/)
+</code></pre>
+<h3 id="font-colorredcenterncl色标常用设置fontcenter"><font color=red><center><strong>ncl色标常用设置</strong></font></center></h3>
+<pre><code>res@lbOrientation=&quot;Vertical&quot; ;竖直放置
+res@lbBoxEndCapStyle      = &quot;TriangleBothEnds&quot;  ；两段为三角形
+res@tmYRMode             = &quot;Automatic&quot;          ; turn off special labels on right axis
+res@@lbLabelsOn             = True
+res@lbLabelFontHeightF      = 0.02     ;set the size of label bar words
+res@pmLabelBarHeightF      = 0.15     
+res@tmYROn=False  ;关闭刻度
+;res@tmYRBorderOn =False ;关闭线
+res@tmYRLabelsOn  =False
+
+
+resp@pmLabelBarParallelPosF     = 0.17  ;色标左右移动
+;resp@pmLabelBarOrthogonalPosF   = -0.1  ;色标上下移动
+resp@pmLabelBarWidthF         = 0.5   ;长度
+resp@pmLabelBarHeightF        = 0.07  ;宽度
+; resp@lbLabelFontHeightF       = 0.015
+</code></pre>
+<h3 id="font-colorredcenter坐标轴字体大小设置fontcenter"><font color=red><center><strong>坐标轴字体大小设置</strong></font></center></h3>
+<pre><code>res@tmXBLabelFontHeightF    = 0.02     ;set the size of x-Axis words
+res@tmYLLabelFontHeightF    = 0.02    ;set the size of y-Axis words
+注意极地投影经纬度的字体大小设置为：
+res1@gsnPolarLabelFontHeightF= .04
+
+res_vec@tmYRMode             = &quot;Automatic&quot;          ; turn off special labels on right axis
+res_vec@tiYAxisString=&quot;&quot;
+res@tmYRLabelsOn = False
+res@gsnPresHgtHeightLabelOn = False
+</code></pre>
+<h3 id="font-colorredcentercolorbar设置fontcenter"><font color=red><center><strong>colorbar设置</strong></font></center></h3>
+<pre><code>;res1@cnLevelSelectionMode= &quot;ExplicitLevels&quot;
+;res1@cnLevels = (/-12,-10,-8,-6,-4,-2,0,2,4/); 值
+;res1@cnFillColors =     (/2,4,5,6,7,8,9,11,15,17,19/) ;颜色设置
+
+
+res1@cnLevelSelectionMode = &quot;ManualLevels&quot;       ; manually select levels
+res1@cnLevelSpacingF      = 0.5              ; contour spacing
+res1@cnMinLevelValF       = -4              ; min level
+res1@cnMaxLevelValF       = 4             ; max level
+</code></pre>
+<h3 id="font-colorredcenter等值线标签fontcenter"><font color=red><center><strong>等值线标签</strong></font></center></h3>
+<pre><code>res1@cnInfoLabelOn               = False  
+</code></pre>
+<h3 id="font-colorredcenter等值线数值标签fontcenter"><font color=red><center><strong>等值线数值标签</strong></font></center></h3>
+<pre><code>res1@cnLineLabelsOn =False
+;等值线数值标签
+res3@cnLineLabelsOn =   True
+res3@cnLineLabelAngleF=0 ;标签角度
+res3@cnLineLabelBackgroundColor =&quot;white&quot;;标签边框内部颜色
+res3@cnLineLabelDensityF=0.5 ;修改等值线上标签数目的相对密度
+res3@cnLineLabelPerimOn=True ;添加边框
+res3@cnLineLabelPerimColor=&quot;white&quot; ;边框颜色
+res3@cnLineLabelPlacementMode=&quot;Computed&quot; ;绘制标签的算法
+res3@cnLineLabelFontHeightF       =0.025
+</code></pre>
+<h3 id="font-colorredcenter图片之间间隔fontcenter"><font color=red><center><strong>图片之间间隔</strong></font></center></h3>
+<pre><code>resp@gsnPanelYWhiteSpacePercent=3
+</code></pre>
+<h3 id="font-colorredcenter数组维度转换fontcenter"><font color=red><center><strong>数组维度转换</strong></font></center></h3>
+<pre><code>z_D1 =f_z-&gt;$varnameh$(D,{levP},{lat1:lat2},:)
+z_D  = reshape(z_D1,(/1,dsizes(0),dsizes(1)/))
+printVarSummary(z_D)
+</code></pre>
+<h3 id="font-colorredcenter创建文件若存在则删除fontcenter"><font color=red><center><strong>创建文件若存在则删除</strong></font></center></h3>
+<pre><code>outFx=&quot;/raid63/xran/Research_ERA5/why/TN_Fulx_data/TN2001-Fx&quot;+fmon+&quot;&quot;+fyear+&quot;.monthly.nc&quot;
+if (isfilepresent(outFx)) then
+    system(&quot;rm -f &quot;+outFx)
+end if
+</code></pre>
+<h3 id="font-colorredcenter提取每一年对应的月fontcenter"><font color=red><center><strong>提取每一年对应的月</strong></font></center></h3>
+<pre><code>ctime = time(fstep:lstep:12) ;每年对应的月
+nctime = dimsizes(ctime)     
+zvar = zvarorg(fstep:lstep:12,:,:,:)
+</code></pre>
+<h3 id="font-colorredcenter组图一张图时不居中fontcenter"><font color=red><center><strong>组图一张图时不居中</strong></font></center></h3>
+<pre><code>resp@gsnPanelCenter = False
+</code></pre>
+<h3 id="font-colorredcenter时间提取fontcenter"><font color=red><center><strong>时间提取</strong></font></center></h3>
+<pre><code>yyyymm = cd_calendar(eof_ts&amp;time,-2)/100 
+</code></pre>
+<h3 id="font-colorredcenterxy轴型图片添加网格fontcenter"><font color=red><center><strong>xy轴型图片添加网格</strong></font></center></h3>
+<pre><code>;res1@tmXMajorGrid= True;, Turns on the grid in the x-direction.
+;res1@tmXMajorGridThicknessF      = 1.0           ; 2.0 is default
+;res1@tmXMajorGridLineDashPattern = 2             ; select short dash lines
+
+;res1@tmYMajorGrid                = True          ; implement y grid
+;res1@tmYMajorGridThicknessF      = 1.0           ; 2.0 is default
+;res1@tmYMajorGridLineDashPattern = 2             ; select short dash lines
+</code></pre>
+<h3 id="font-colorredcenter计算月平均值fontcenter"><font color=red><center><strong>计算月平均值</strong></font></center></h3>
+<pre><code>calculate_monthly_values
+具体使用见ncl官网
+读取一年的每日值（时间，水平，纬度，经度）并计算月平均值。该值为类型为“short”，带有scale_factor和“加法偏移量”。n基准是指“时间”维度（n基准=0）。
+
+f = addfile(&quot;air.day.2008.nc&quot;,&quot;r&quot;)
+x = short2flt(f-&gt;air)
+printVarSummary(x)
+opt = True
+opt@nval_crit = 12   ; require at least 12 values for the &quot;avg&quot; is calculated.
+xMon = calculate_monthly_values (x, &quot;avg&quot;, 0,opt)
+printVarSummary(xMon)
+输出如下所示：
+Variable: xMon
+Type: float
+
+Number of Dimensions: 4
+Dimensions and sizes:   [time | 12] x [level | 17] x [lat | 73] x [lon | 144]
+Coordinates: 
+time: [17593032..17601072]
+level: [1000..10]
+lat: [90..-90]
+lon: [ 0..357.5]
+</code></pre>
+<h3 id="font-colorredcenter维度fontcenter"><font color=red><center><strong>维度</strong></font></center></h3>
+<pre><code>nlat = dimsizes(lat)
+nlon = dimsizes(lon)
+nlevel = dimsizes(level)
+res_vec@tmYRMode             = &quot;Automatic&quot;          ; turn off special labels on right axis  
+</code></pre>
+<h3 id="font-colorredcenter将变量输出保存fontcenter"><font color=red><center><strong>将变量输出保存</strong></font></center></h3>
+<pre><code>运行ncl命令时ncl *.ncl &gt;&amp;1.txt将变量输出保存
+</code></pre>
+<h3 id="font-colorredcenter出图图片旋转fontcenter"><font color=red><center><strong>出图图片旋转</strong></font></center></h3>
+<pre><code>gsnPaperOrientation = ″portrait″（纵向）″landscape″（横向）
+</code></pre>
+<h3 id="font-colorredcenter符号fontcenter"><font color=red><center><strong>°符号</strong></font></center></h3>
+<pre><code>[&quot;+youwantlats+&quot;-&quot;+youwantlate+&quot;~S~o~N~N]
+</code></pre>
+<h3 id="font-colorredcenter提取变量的时间维度fontcenter"><font color=red><center><strong>提取变量的时间维度</strong></font></center></h3>
+<pre><code>date    = cd_calendar(x&amp;time,-2)        ; yyyymmdd
+yrfrac  = yyyymmdd_to_yyyyfrac (date, 0)
+delete(yrfrac@long_name)
+delete(x@long_name)
+
+pStrt = 19950101      ; 4 years: winter 96-97 MJO gold standard
+pLast = 19981231
+iStrt = ind(date.eq.pStrt)        ; user specified dates
+iLast = ind(date.eq.pLast)
+delete(date)
+</code></pre>
+<h3 id="font-colorredcenter间隔fontcenter"><font color=red><center><strong>间隔</strong></font></center></h3>
+<pre><code>res1@mpGridLonSpacingF = 90.
+
+;地图上经度与纬度线的间隔
+res1@gsnMajorLonSpacing=90
+res1@gsnMajorLatSpacing=20
+
+;地图上网格的间隔
+res1@mpGridAndLimbOn         = True
+res1@mpGridLatSpacingF       = 20
+res1@mpGridLonSpacingF       = 90
+res1@mpGridLineDashPattern   = 1
+res1@mpGridLineColor         =&quot;black&quot;
+res1@mpGridLineThicknessF   =0.5
+</code></pre>
+<h3 id="font-colorredcenter底图地图线的颜色和粗细fontcenter"><font color=red><center><strong>底图地图线的颜色和粗细</strong></font></center></h3>
+<pre><code>res1@mpGeophysicalLineColor = &quot;gray&quot; 
+res1@mpGeophysicalLineThicknessF = 0.5; - Changes the thickness of continental outlines.
+</code></pre>
+<h3 id="font-colorredcenterxy轴刻度线标签fontcenter"><font color=red><center><strong>XY轴刻度线标签</strong></font></center></h3>
+<pre><code>;XY轴的标签不显示
+res_vec@tmYLLabelsOn=False
+res_vec@tmXBLabelsOn=False
+;某一幅图显示，其他不显示数值，但图片大小不一致，控制子图的属性；
+res@gsnMaximize= False  
+resPanel@gsnMaximize = True  
+;调节图片间距
+;展板中各子图空白间距过大如何调节？增加空白间隙距离的
+resPanel@gsnPanelYWhiteSpacePercent         = 0.5  
+resPanel@gsnPanelXWhiteSpacePercent         = 0.2  
+;调整各子图的位置减小间隙
+resPanel@gsnPanelXF                                         = (/0.1,0.38,0.66,0.1,0.38,0.66/)     ；各个子图的横向位置
+resPanel@gsnPanelYF                                         = (/-1,-1,-1,-1,-1,-1/)    ；-1是默认值
+</code></pre>
+<h3 id="font-colorredcenter子图标号fontcenter"><font color=red><center><strong>子图标号</strong></font></center></h3>
+<pre><code>resPanel@gsnPanelFigureStrings                                      = (/&quot;(a)&quot;,&quot;(b)&quot;,&quot;(c)&quot;,&quot;(d)&quot;,&quot;(e)&quot;,&quot;(f)&quot;/)
+resPanel@gsnPanelFigureStringsFontHeightF                      = 0.02
+resPanel@amJust                                                        = &quot;TopLeft&quot;    ；位置，默认是在右下方
+resPanel@gsnPanelFigureStringsPerimOn                    = False          ;去掉方框的边框
+resPanel@gsnPanelFigureStringsBackgroundFillColor    =-1                ;方框背景设置为透明
+</code></pre>
+<h3 id="font-colorredcenter极地投影坐标距离图片fontcenter"><font color=red><center><strong>极地投影坐标距离图片</strong></font></center></h3>
+<pre><code>res@gsnPolarLabelDistance=1.08 ;默认为1.04
+</code></pre>
+<h3 id="font-colorredcenterreverse-colormapfontcenter"><font color=red><center><strong>reverse colormap</strong></font></center></h3>
+<pre><code>cmap = read_colormap_file(&quot;precip4_diff_19lev&quot;) ; read color data
+cmap = cmap(::-1,:)                             ; reverse colormap
+res@cnFillPalette        = cmap 
+</code></pre>
+<h3 id="font-colorredcentercolorbar选择颜色区域fontcenter"><font color=red><center><strong>colorbar选择颜色区域</strong></font></center></h3>
+<pre><code>res@gsnSpreadColors=True
+res@gsnSpreadColorStart=100
+res@gsnSpreadColorEnd=255
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://RanX79.github.io/tag/X3VSMdMO5/" class="tag">
+                    ncl
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/cdo/">
+                  <h3 class="post-title">
+                    CDO
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

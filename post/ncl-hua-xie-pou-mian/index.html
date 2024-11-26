@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>ncl画斜剖面 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="趁着今天顺利挂上了github，赶紧同步一下！
+主要参考ncl官网中的例子：narr_5.ncl，但该例子多了对曲面网格数据的处理,首先利用了ESMF_regrid_with_weights进行网格化生成直线网格，如果用再分析资料个人觉得可..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">ncl画斜剖面</h2>
+            <div class="post-date">2024-03-15</div>
+            
+              <div class="feature-container" style="background-image: url('https://RanX79.github.io//post-images/ncl-hua-xie-pou-mian.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p>趁着今天顺利挂上了github，赶紧同步一下！</p>
+<p>主要参考ncl官网中的例子：<a href="https://www.ncl.ucar.edu/Applications/height_lat.shtml">narr_5.ncl</a>，但该例子多了对曲面网格数据的处理,首先利用了ESMF_regrid_with_weights进行网格化生成直线网格，如果用再分析资料个人觉得可以不用这一步。</p>
+<p>主要分为两步，首先是大圆路径，主要使用ncl中gc_latlon这个函数，该函数中设置变量时有一个常数npts，为x轴的点数，根据需要设置，一般设置越大数据越密。接下来进行插值，使用双线性插值从直线网格插值到非结构化网格，使用linint2_points_Wrap这个函数。</p>
+<p>在实际画图中，遇到的问题是最后画图设置的经纬度，因为地球是球面，所以经纬度不是均匀的，设置时需要画gc_latlon 函数对应的经纬度。在选择的经度范围跨越半球时，两点之间的方向不可控制，这是因为gc_latlon这个函数的问题，试了多次也没解决，只能选择不跨越半球了。<br>
+If the two specified points are exactly opposite one another on the globe, the code does not fail, but the direction of the great circle route will be somewhat unpredictable. Setting npts &lt;= 2 has the effect of just calculating the great circle distance between the two input points. No lat/lon points will be interpolated in between.<br>
+最后出现的警告，猜测是由于网格的不均匀分布造成的，但对画图的结果好像没有影响。<br>
+warning:ScalarFieldSetValues: irregular coordinate array sfXArray non-monotonic: defaulting sfXArray<br>
+更新一下，最后出现的警告是因为我！写代码的时候忘记删掉cyclic=&quot;True&quot;这一行设置了！所以坐标就会出现警告！（问题不大</p>
+<pre><code>;=================================================================
+
+;----------------斜刨面
+
+;  calculate great circle along transect
+
+npts=600 ;The actual number of interpolated points is npts-2.
+
+N1=npts-1
+
+nLabels      = 5   ;x轴坐标想要的标签数目
+
+fiCyclicX    =True ;注意数据是否循环
+
+;选取的两个点
+
+leftlat  =  45
+
+rightlat =  80
+
+leftlon  =  300
+
+rightlon =  357.5
+
+;attention:数据是从0-360 or -180-180
+
+;lonFlip 可以使用该函数转换
+
+dist = gc_latlon(leftlat,leftlon, rightlat,rightlon, npts,2) ;大圆路径
+
+;插值 变量为Fx_pos_10_area
+
+xlon=Fx_pos_10_area&amp;lon
+
+xlat=Fx_pos_10_area&amp;lat
+
+Fx_pos_10_cross = linint2_points_Wrap(xlon,xlat,Fx_pos_10_area,fiCyclicX,dist@gclon,dist@gclat,2)
+
+;插值后赋予变量属性
+
+Fx_pos_10_cross!0      = &quot;time&quot;
+
+Fx_pos_10_cross!1      = &quot;level&quot;
+
+Fx_pos_10_cross&amp;level= Fx_pos_10_area&amp;level
+
+;-----对应的经纬度
+
+latXsecUser  = dist@gclat      ; convenience
+
+lonXsecUser  = dist@gclon
+
+print (dist@gclat+&quot;  &quot;+dist@gclon )  ; print the lats/lons
+
+;--------画图时x轴坐标设置
+
+;数据从0-360
+
+XBValues_pos    = toint( fspan(0,N1,nLabels) )
+
+XBLabels_pos    = new(nLabels,&quot;string&quot;)
+
+do i=0,nLabels-1
+
+x = lonXsecUser(XBValues_pos(i))
+
+y = latXsecUser(XBValues_pos(i))
+
+if(x.lt.180)then
+XBLabels_pos(i) = sprintf(&quot;%3.1f&quot;, y)+&quot;N&quot;+&quot;~C~&quot;+sprintf(&quot;%3.1f&quot;, x)+&quot;E&quot;
+
+else if(x.gt.180.and.x.le.360)then
+
+x1=360-x
+
+XBLabels_pos(i) = sprintf(&quot;%3.1f&quot;, y)+&quot;N&quot;+&quot;~C~&quot;+sprintf(&quot;%3.1f&quot;,x1)+&quot;W&quot;
+
+else if(x.eq.180.or.x.eq.360)then
+
+XBLabels_pos(i) = sprintf(&quot;%5.1f&quot;, y)+&quot;N&quot;+&quot;~C~&quot;+sprintf(&quot;%5.1f&quot;, x)
+end if
+
+end if
+
+end if
+
+end do
+
+res@tmXBMode   = &quot;Explicit&quot;
+
+res@tmXBValues = XBValues_pos
+
+res@tmXBLabels = XBLabels_pos
+</code></pre>
+<p>图片类似这样吧！<br>
+<img src="https://RanX79.github.io//post-images/1710485272971.png" alt="" loading="lazy"></p>
+<p>ps：最近读文献才发现，看你研究方向热不热门，就看看高质量期刊新出的文章跟你的方向差不多的多不多；然后发现我的方向真！离大谱！（不是 我爱科研</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/rws-bo-yuan/">
+                  <h3 class="post-title">
+                    RWS波源
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>

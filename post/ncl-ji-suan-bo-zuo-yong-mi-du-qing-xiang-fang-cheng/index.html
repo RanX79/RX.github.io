@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>NCL计算波作用密度倾向方程 | Ran Xue</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://RanX79.github.io//favicon.ico?v=1732606498267">
+<link rel="stylesheet" href="https://RanX79.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="···
+undef(&quot;def_dAdt&quot;)
+;输入位涡的气候态和异常场
+;数据：time lat lon 
+function def_dAdt(pv_cli[*][*][*]:numeric,pv_ano[*][*][*..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://RanX79.github.io/">
+        <img src="https://RanX79.github.io//images/avatar.png?v=1732606498267" class="site-logo">
+        <h1 class="site-title">Ran Xue</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      是冉冉升起的冉
+    </div>
+    <div class="site-footer">
+      今天也要好好学习哦！ | <a class="rss" href="https://RanX79.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">NCL计算波作用密度倾向方程</h2>
+            <div class="post-date">2024-11-26</div>
+            
+            <div class="post-content" v-pre>
+              <p>···</p>
+<pre><code>undef(&quot;def_dAdt&quot;)
+;输入位涡的气候态和异常场
+;数据：time lat lon 
+function def_dAdt(pv_cli[*][*][*]:numeric,pv_ano[*][*][*]:numeric,youwantlevel)
+
+local pi,dName,lon,lat,level,gradpv,pv_grad_lat,pv_grad_lon,A,opt,dt,t,gradpv2,dQdy,time
+
+begin
+
+pi      = atan(1.0)*4.
+dName   = getvardims(pv_cli)
+
+if (any(ismissing(dName(1:)))) then
+print(&quot;fatal:  def_DADt: requires that all the rightmost dimensions be named&quot;)
+        exit
+end if
+
+lat     = pv_cli&amp;$dName(1)$
+lon     = pv_cli&amp;$dName(2)$
+; cosine
+coslat  = cos(lat(:)*pi/180.)
+coslat@_FillValue = default_fillvalue(typeof(coslat))
+coslat  = (/where(coslat.le.0.,coslat@_FillValue,coslat)/)
+; 1-D -&gt; 3-D
+coslattmp   = conform_dims(dimsizes(pv_cli),coslat,1)
+;------------------------------------------------------
+
+; dQdx    = center_finite_diff_n(pv_cli,lon*pi/180., False,0,2)
+dQdy    = center_finite_diff_n(pv_cli,lat*pi/180., False,0,1)
+copy_VarMeta(pv_cli, dQdy)
+
+if (any(dQdy.eq.0)) then
+    print(&quot;your data: dQdy have zero!!!!&quot;)
+end if
+
+;------------------------------------------------------
+gradpv       = grad_latlon_cfd(pv_cli, pv_cli&amp;latitude, pv_cli&amp;longitude, True, False)
+pv_grad_lat  = gradpv[0]    
+pv_grad_lon  = gradpv[1]
+
+copy_VarMeta(pv_cli, pv_grad_lat)
+copy_VarMeta(pv_cli, pv_grad_lon)
+
+printVarSummary(pv_grad_lat)
+printMinMax(pv_grad_lat, 0)
+
+if (any(pv_grad_lat.eq.0)) then
+    print(&quot;your data: pv_grad_lat have zero!!!!&quot;)
+end if
+
+if (any(pv_grad_lon.eq.0)) then
+    print(&quot;your data: pv_grad_lat have zero!!!!&quot;)
+end if
+
+
+pv_grad_lat =where(pv_grad_lat.eq.0, pv_grad_lat@_FillValue, pv_grad_lat)
+pv_grad_lon =where(pv_grad_lon.eq.0, pv_grad_lon@_FillValue, pv_grad_lon)
+dQdy        =where(dQdy.eq.0,               dQdy@_FillValue, dQdy)
+
+;------填补缺失值
+guess     = 1                ; use zonal means
+is_cyclic = True             ; cyclic [global]
+nscan     = 1500             ; usually much less than this
+eps       = 1.e-2            ; variable dependent
+relc      = 0.6              ; relaxation coefficient
+opt       = 0                ; not used
+
+; poisson_grid_fill( pv_grad_lat, is_cyclic, guess, nscan, eps, relc, opt)
+; poisson_grid_fill( pv_grad_lon, is_cyclic, guess, nscan, eps, relc, opt)
+; poisson_grid_fill( dQdy, is_cyclic, guess, nscan, eps, relc, opt)
+
+;------------------------------------------------------
+
+re      = 6.37*10^6
+
+gradpv2=sqrt(pv_grad_lat^2+pv_grad_lon^2)
+copy_VarMeta(pv_cli, gradpv2)
+
+
+if (any(gradpv2.eq.0)) then
+    print(&quot;your data: gradpv2 have zero!!!!&quot;)
+end if
+gradpv2=where(gradpv2.eq.0, gradpv2@_FillValue, gradpv2)
+;poisson_grid_fill( gradpv2, is_cyclic, guess, nscan, eps, relc, opt)
+print(&quot;-----gradpv2-----&quot;)
+printMinMax(gradpv2, 0)
+
+;-----3种方法计算A
+;A=(youwantlevel*pv_ano^2)/(2.*1000.*gradpv2)
+
+A=(youwantlevel*pv_ano^2*re*coslattmp^2)/(2.*1000.*dQdy)
+
+;A=(1.225*pv_ano^2)/(2.*dQdy)
+
+copy_VarMeta(pv_cli, A)
+printVarSummary(A)
+
+
+print(&quot;-----pv_ano-----&quot;)
+printMinMax(pv_ano, 0)
+print(&quot;-----pv_ano^2-----&quot;)
+printMinMax(pv_ano^2, 0)
+print(&quot;-----dQdy-----&quot;)
+printMinMax(dQdy^2, 0)
+print(&quot;-----A-----&quot;)
+printMinMax(A, 0)
+
+;utc     =cd_calendar(pv_cli&amp;$dName(0)$, 2)
+;day     = tointeger(utc(:,2))
+;day=ispan(0, 60, 1)
+;print(utc)
+
+;---Convert &quot;hours since ...&quot; to &quot;seconds since ...&quot;
+
+time    = pv_cli&amp;time   
+print(time@units);hours since 1900-01-01 00:00:00
+
+dt = 24.*3600.
+t = time*3600.
+
+
+if(any(ismissing(A))) then
+    print(&quot;Your data: A is missing.&quot;)
+end if
+poisson_grid_fill( A, is_cyclic, guess, nscan, eps, relc, opt)
+
+dAdt    = tofloat(center_finite_diff_n(A,t,False,0,0));最后一个是时间维 单位s
+copy_VarMeta(pv_cli, dAdt)
+printVarSummary(dAdt)
+printMinMax(dAdt, 0)
+
+
+return(dAdt)
+
+end
+</code></pre>
+<p>···</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://RanX79.github.io/post/ncl-ji-suan-bo-zhe-she-zhi-shu/">
+                  <h3 class="post-title">
+                    NCL计算波折射指数
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+    <script src="https://utteranc.es/client.js"
+        repo="RanX79/RanX79.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  </body>
+</html>
